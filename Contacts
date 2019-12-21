@@ -1,0 +1,330 @@
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+const int MAX=1000;
+
+//联系人结构体
+struct Person
+{
+	string m_Name;
+	int m_Sex;
+	int m_Age;
+	string m_Phone;
+	string m_Address;
+};
+
+//通讯录结构体
+struct Addressbook
+{
+	struct Person PersonArray[MAX];
+	int m_Size;
+};
+
+void AddPerson(Addressbook* ads)
+{
+	if (ads->m_Size == MAX)
+	{
+		cout << "通讯录已满" << endl;
+		return;
+	}
+	else
+	{
+		string name;//姓名
+		cout << "请输入姓名" << endl;
+		cin >> name;
+		if (name == "潘多多" || name == "潘多" || name==  "多多"||name=="多"||name=="多多多")
+		{
+			cout << "李似锅憨批！！！" << endl << endl;
+			return;
+		}
+		else if (name == "老斌哥" || name == "胡斌")
+		{
+			cout << "什么老斌哥，那叫帅！！！" << endl;
+			return;
+		}
+		else if (name == "帅")
+		{
+			cout << "什么帅，那叫老斌哥！！！" << endl;
+			return;
+		}
+		ads->PersonArray[ads->m_Size].m_Name = name;
+
+		cout << "请输入性别" << endl;
+		cout << "1---男" << endl;
+		cout << "2---女" << endl;
+		int sex = 0;//性别
+
+		while (true)
+		{
+			cin >> sex;
+			if (sex == 1 || sex == 2)
+			{
+				ads->PersonArray[ads->m_Size].m_Sex=sex;
+				break;
+			}
+			cout << "输入有误，请重新输入" << endl;
+		}
+
+		cout << "请输入年龄" << endl;//年龄
+		int age = 0;
+		cin >> age;
+		if (age < 10)
+		{
+			cout << "太小了！！" << endl;
+			system("cls");
+			return;
+		}
+		else if (age > 150)
+		{
+			cout << "太老了" << endl;
+			system("cls");
+			return;
+		}
+			
+		ads->PersonArray[ads->m_Size].m_Age = age;
+
+		cout << "请输入联系电话" << endl;//电话
+		string phone;
+		cin >> phone;
+		ads->PersonArray[ads->m_Size].m_Phone = phone;
+
+		cout << "请输入家庭地址" << endl;//地址
+		string address;
+		cin >> address;
+		ads->PersonArray[ads->m_Size].m_Address = address;
+
+		ads->m_Size++;//更新人数
+
+		cout << "添加成功" << endl;
+
+		system("pause");
+		system("cls");
+	}
+}
+
+void ShowContacts(Addressbook *ads)
+{
+	if (ads->m_Size == 0)
+		cout << "当前记录为空！" << endl;
+	else
+	{
+		for (int i = 0;i < ads->m_Size;i++)
+		{
+			cout << "姓名: " << ads->PersonArray[i].m_Name<<"\t";
+			cout << "性别: " << (ads->PersonArray[i].m_Sex==1?"男":"女")<<"\t";
+			cout << "年龄: " << ads->PersonArray[i].m_Age<<"\t";
+			cout << "电话: " << ads->PersonArray[i].m_Phone<<"\t";
+			cout << "地址: " << ads->PersonArray[i].m_Address<<endl;
+
+		}
+	}
+	system("pause");
+	system("cls");
+}
+
+int isExist(Addressbook* ads, string name)
+{
+	for (int i = 0;i < ads->m_Size;i++)
+	{
+		if (ads->PersonArray[i].m_Name == name)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
+void DeleteContacts(Addressbook* ads)
+{
+	cout << "请输入要删除的联系人" << endl;
+
+	string name;
+	cin >> name;
+
+	if (isExist(ads, name) != -1)
+	{
+		for (int i=0;i < ads->m_Size;i++)
+		{
+			ads->PersonArray[i] = ads->PersonArray[i + 1];
+		}
+		ads->m_Size--;
+		cout << "删除成功！" << endl;
+	}
+	else
+	{
+		cout << "查无此人！" << endl;
+	}
+	system("pause");
+	system("cls");
+}
+
+void SearchContacts(Addressbook* ads)
+{
+	cout << "请输入要查找的联系人: " << endl;
+	string name;
+	cin >> name;
+
+	int flag = isExist(ads, name);
+	if (flag != -1)
+	{
+		cout << "姓名" << ads->PersonArray[flag].m_Name << "\t";
+		cout << "性别" << (ads->PersonArray [flag].m_Sex==1?"男":"女")<< "\t";
+		cout << "年龄" << ads->PersonArray [flag].m_Age<< "\t";
+		cout << "电话" << ads->PersonArray [flag].m_Phone<< "\t";
+		cout << "住址" << ads->PersonArray [flag].m_Address<< endl;
+	}
+	else
+	{
+		cout << "查无此人!" << endl;
+	}
+	system("pause");
+	system("cls");
+}
+
+void ModifyContacts(Addressbook* ads)
+{
+	cout << "请输入要修改的联系人" << endl;
+	
+	string name;
+	cin >> name;
+
+	int flag = isExist(ads, name);
+
+	if (flag != -1)
+	{
+		string name;
+		cout << "请输入姓名:" << endl;
+		cin >> name;
+		ads->PersonArray[flag].m_Name = name;
+
+		cout << "请输入性别: " << endl;
+		cout << "1---男" << endl;
+		cout << "2---男" << endl;
+
+		int sex = 0;
+		cin >> sex;
+
+		while (true)
+		{
+			if (sex = 1 || sex == 2)
+			{
+				ads->PersonArray->m_Sex = sex;
+				break;
+			}
+			cout << "输入有误！" << endl;
+		}
+
+		cout << "请输入年龄: " << endl;
+		int age = 0;
+		cin >> age;
+		ads->PersonArray[flag].m_Age=age;
+
+		cout << "请输入联系电话: " << endl;
+		string phone;
+		cin >> phone;
+		ads->PersonArray[flag].m_Phone = phone;
+
+		cout << "请输入家庭地址" << endl;
+		string address;
+		cin >> address;
+		ads->PersonArray[flag].m_Address = address;
+
+		cout << "修改成功！" << endl;
+	}
+	else
+	{
+		cout << "查无此人！" << endl;
+	}
+
+	system("pause");
+	system("cls");
+}
+
+
+void CleanContacts(Addressbook* ads)
+{
+	cout << "是否要清空？" << endl;
+	cout << "0---否" << endl;
+	cout << "1---是" << endl;
+	
+	int decide=2;
+	cin >> decide;
+	if (decide == 1)
+	{
+		ads->m_Size = 0;
+		cout << "通讯录已清空！" << endl;
+		system("pause");
+		system("cls");
+	}
+	else
+	{
+		cout << "你选择不清空" << endl;
+		system("pause");
+		system("cls");
+	}
+}
+
+
+void showMenu()
+{
+	cout << "***************************" << endl;
+	cout << "*****  1、添加联系人  *****" << endl;
+	cout << "*****  2、显示联系人  *****" << endl;
+	cout << "*****  3、删除联系人  *****" << endl;
+	cout << "*****  4、查找联系人  *****" << endl;
+	cout << "*****  5、修改联系人  *****" << endl;
+	cout << "*****  6、清空联系人  *****" << endl;
+	cout << "*****  0、退出通讯录  *****" << endl;
+	cout << "***************************" << endl;
+}
+
+int main()
+{
+	Addressbook ads;
+	ads.m_Size = 0;
+
+
+	int select = 0;
+
+	while (true)
+	{
+		showMenu();
+
+		cin >> select;
+
+		switch (select)
+		{
+		case 1://添加
+			AddPerson(&ads);//地址传递修改实参
+			break;
+		case 2://显示
+			ShowContacts(&ads);
+			break;
+		case 3://删除
+			DeleteContacts(&ads);
+			break;
+		case 4://查找
+			SearchContacts(&ads);
+			break;
+		case 5://修改
+			ModifyContacts(&ads);		
+			break;
+		case 6://清空
+			CleanContacts(&ads);
+			break;
+		case 0://退出
+			cout << "欢迎下次使用" << endl;
+			system("pause");
+			return 0;
+			break;
+		default:
+			break;
+		}
+	}
+	
+
+	system("pause");
+	return 0;
+}
